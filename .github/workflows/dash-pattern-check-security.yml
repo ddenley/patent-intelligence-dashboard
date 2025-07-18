@@ -14,13 +14,31 @@ jobs:
 
       - name: Scan for dangerously_set_inner_html
         run: |
-          if grep -rnw './' -e 'dangerously_set_inner_html'; then exit 1; fi
+          echo "SCANNING: Checking for 'dangerously_set_inner_html'..."
+          if grep -rnw './' -e 'dangerously_set_inner_html' --include=*.py --exclude-dir=.github; then
+            echo "WARNING: Found usage of 'dangerously_set_inner_html'. Please remove it."
+            exit 1
+          else
+            echo "SUCCESS: No issues found."
+          fi
 
       - name: Scan for eval or exec usage
         run: |
+          echo "SCANNING: Checking for 'eval(' and 'exec(' usage..."
           found=0
-          for path in ./callbacks ./components ./layout ./app.py; do
-            grep -rnw "$path" -e 'eval(' && found=1
-            grep -rnw "$path" -e 'exec(' && found=1
+          for path in ./callbacks ./components ./layout ./utils ./app.py; do
+            if grep -rnw "$path" -e 'eval('; then
+              echo "WARNING: Found usage of eval() in $path"
+              found=1
+            fi
+            if grep -rnw "$path" -e 'exec('; then
+              echo "WARNING: Found usage of exec() in $path"
+              found=1
+            fi
           done
-          if [ "$found" -eq 1 ]; then exit 1; fi
+          if [ "$found" -eq 1 ]; then
+            echo "WARNING: Dangerous code detected. Please refactor or secure it."
+            exit 1
+          else
+            echo "SUCCESS: No issues found."
+          fi
