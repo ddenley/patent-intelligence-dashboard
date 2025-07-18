@@ -1,0 +1,22 @@
+name: Dash Security Pattern Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  scan-patterns:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Scan for dangerously_set_inner_html
+        run: |
+          if grep -rnw './' -e 'dangerously_set_inner_html'; then exit 1; fi
+
+      - name: Scan for eval or exec usage
+        run: |
+          if grep -rnw './' -e 'eval('; then exit 1; fi
+          if grep -rnw './' -e 'exec('; then exit 1; fi
