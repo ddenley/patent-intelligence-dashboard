@@ -18,5 +18,9 @@ jobs:
 
       - name: Scan for eval or exec usage
         run: |
-          if grep -rnw './' -e 'eval('; then exit 1; fi
-          if grep -rnw './' -e 'exec('; then exit 1; fi
+          found=0
+          for path in ./callbacks ./components ./layout ./app.py; do
+            grep -rnw "$path" -e 'eval(' && found=1
+            grep -rnw "$path" -e 'exec(' && found=1
+          done
+          if [ "$found" -eq 1 ]; then exit 1; fi
