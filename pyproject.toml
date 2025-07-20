@@ -1,5 +1,0 @@
-[tool.pip-audit]
-vulnerability-criteria = "all"
-ignore-vulns = [
-  "PYSEC-2023-206"  # selenium vulnerability ID
-]
