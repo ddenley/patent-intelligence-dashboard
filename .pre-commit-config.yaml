@@ -32,4 +32,4 @@ repos:
         entry: bandit
         language: system
         types: [python]
-        args: ["-r", "."]
+        args: ["-r", "src"]

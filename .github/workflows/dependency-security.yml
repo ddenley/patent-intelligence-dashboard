@@ -34,4 +34,4 @@ jobs:
           pip install pip-audit
 
       - name: Run pip-audit
-        run: pip-audit
+        run: pip-audit --config pyproject.toml

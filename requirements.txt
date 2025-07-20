@@ -20,7 +20,11 @@ isort==6.0.1
 mypy==1.17.0
 
 # Security checks
-bandit==1.8.6
+bandit
 
 # Pre-commit
 pre-commit==4.2.0
+
+# For dependency security
+setuptools==78.1.1
+urllib3==2.5.0
