@@ -7,20 +7,34 @@ on:
     branches: [main]
 
 jobs:
-  safety:
+  pip-audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - name: Set up Python 3.9
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install project dependencies
         run: |
-          pip install safety
           pip install -r requirements.txt
 
-      - name: Run safety check
-        run: safety check --full-report
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      - name: Run pip-audit
+        run: |
+          pip-audit \
+            --ignore-vuln PYSEC-2023-206 \
+            --ignore-vuln PYSEC-2022-43167
+

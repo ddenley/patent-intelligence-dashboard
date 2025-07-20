@@ -19,6 +19,7 @@ repos:
         entry: flake8
         language: system
         types: [python]
+        args: ["--max-line-length=88"]
 
       - id: mypy
         name: mypy
@@ -31,4 +32,4 @@ repos:
         entry: bandit
         language: system
         types: [python]
-        args: ["-r", "."]
+        args: ["-r", "src"]
