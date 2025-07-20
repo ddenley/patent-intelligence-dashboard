@@ -21,7 +21,6 @@ mypy==1.17.0
 
 # Security checks
 bandit==1.8.6
-safety==3.2.3
 
 # Pre-commit
 pre-commit==4.2.0
